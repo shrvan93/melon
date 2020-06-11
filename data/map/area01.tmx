@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.5" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#a7dcfa" nextlayerid="6" nextobjectid="11">
+<map version="1.2" tiledversion="1.3.5" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#a7dcfa" nextlayerid="7" nextobjectid="16">
  <tileset firstgid="1" source="area01_level_tiles.tsx"/>
  <layer id="1" name="foreground" width="20" height="15">
   <data encoding="base64">
@@ -13,6 +13,21 @@
   <object id="8" x="384.624" y="353.078" width="61.8796" height="82.5061"/>
   <object id="9" x="447.11" y="394.331" width="97.066" height="86.1461"/>
   <object id="10" x="545.996" y="416.777" width="93.426" height="63.0929"/>
+ </objectgroup>
+ <objectgroup id="6" name="entities">
+  <object id="11" name="coinEntity" x="322.744" y="283.918" width="32" height="32">
+   <properties>
+    <property name="framewidth" value="32"/>
+    <property name="image" value="spinning_coin_gold"/>
+   </properties>
+  </object>
+  <object id="12" name="coinEntity" x="397.971" y="316.678" width="32" height="32">
+   <properties>
+    <property name="framewidth" value="32"/>
+    <property name="image" value="spinning_coin_gold"/>
+   </properties>
+  </object>
+  <object id="15" name="enemyEntity" x="190.492" y="321.531" width="116.173" height="64"/>
  </objectgroup>
  <objectgroup id="3" name="sprite" offsetx="0" offsety="-1.21332">
   <object id="2" name="mainPlayer" x="26.6931" y="349.98" width="32" height="64">

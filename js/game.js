@@ -32,6 +32,9 @@ var game = {
 
         // register our player entity in the object pool
         me.pool.register("mainPlayer", game.PlayerEntity);
+        // register the coin entity
+        me.pool.register("coinEntity", game.CoinEntity);
+        me.pool.register("enemyEntity", game.EnemyEntity);
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT,  "left");
