@@ -13,10 +13,10 @@
     <property name="image" value="gripe_run_right.png"/>
    </properties>
   </object>
-  <object id="8" name="coinEntity" x="334.878" y="283.918" width="32" height="34.4266">
+  <object id="8" name="coinEntity" x="334.878" y="283.918" width="32" height="32">
    <properties>
     <property name="framewidth" type="int" value="32"/>
-    <property name="image" value="spinning_coin_gold.png"/>
+    <property name="image" value="spinning_coin_gold"/>
    </properties>
   </object>
   <object id="9" name="coinEntity" x="231.745" y="344.584" width="32" height="34.4266">

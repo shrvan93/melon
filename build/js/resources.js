@@ -65,6 +65,11 @@ game.resources = [
         "src": "data/map/game01.tmx"
     },
     {
+        "name": "game02",
+        "type": "tmx",
+        "src": "data/map/game02.tmx"
+    },
+    {
         "name": "mymap",
         "type": "tmx",
         "src": "data/map/mymap.tmx"

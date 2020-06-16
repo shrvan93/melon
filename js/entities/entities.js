@@ -11,7 +11,7 @@ game.PlayerEntity = me.Entity.extend({
         this._super(me.Entity, 'init', [x, y , settings])
 
         // setam viteza maxima si frictiunea
-        this.body.setMaxVelocity(3, 10)
+        this.body.setMaxVelocity(3, 14)
         this.body.setFriction(0.4, 0)
 
         // setam display-ul sa urmareasca personajul nostru
@@ -57,12 +57,25 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         if (me.input.isKeyPressed("jump")) {
-            if (!this.body.jumping && !this.body.falling) {
-                this.body.force.y = -this.body.maxVel.y
+            this.body.jumping = true
+            if (this.multipleJump <= 2) {
+                // easy "math" for double jump
+                this.body.force.y = -this.body.maxVel.y * this.multipleJump++;
+                me.audio.play("jump", false);
             }
-        } else {
-            // setam viteaza 0 pe axa y
-            this.body.force.y = 0
+        }
+        else {
+
+            this.body.force.y = 0;
+
+            if (!this.body.falling && !this.body.jumping) {
+                // reset the multipleJump flag if on the ground
+                this.multipleJump = 1;
+            }
+            else if (this.body.falling && this.multipleJump < 2) {
+                // reset the multipleJump flag if falling
+                this.multipleJump = 2;
+            }
         }
 
         // apply physics to the body (this moves the entity)
@@ -71,8 +84,15 @@ game.PlayerEntity = me.Entity.extend({
         // handle collisions against other shapes
         me.collision.check(this);
 
-        // return true if we moved or if the renderable was updated
-        return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
+        // check if we moved (an "idle" animation would definitely be cleaner)
+        if (this.body.vel.x !== 0 || this.body.vel.y !== 0 ||
+            (this.renderable && this.renderable.isFlickering())
+        ) {
+            this._super(me.Entity, "update", [dt]);
+            return true;
+        }
+
+        return false;
     },
 
    /**
@@ -86,32 +106,3 @@ game.PlayerEntity = me.Entity.extend({
 });
 
 
-
-/**
- * Coin Entity
- */
-game.Coin = me.CollectableEntity.extend({
-
-    /**
-     * constructor
-     */
-    init:function (x, y, settings) {
-        // call the constructor
-        this._super(me.CollectableEntity, 'init', [x, y , settings])
-    },
-
-   /**
-     * colision handler
-     * (called when colliding with other objects)
-     */
-    onCollision : function (response, other) {
-        // dispare moneda
-        this.body.setCollisionMask(me.collision.types.NO_OBJECT)
-
-        // scoatem moneda din joc
-        me.game.world.removeChild(this)
-
-        // obiectul nu este solid
-        return false
-    }
-})
