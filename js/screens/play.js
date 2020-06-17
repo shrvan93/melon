@@ -6,6 +6,9 @@ game.PlayScreen = me.Stage.extend({
         // reset the score
         game.data.score = 0;
 
+        // play the audio track
+        me.audio.playTrack("dst-inertexponent");
+
         // load map
         me.levelDirector.loadLevel("game02")
 
@@ -19,6 +22,9 @@ game.PlayScreen = me.Stage.extend({
      *  action to perform when leaving this screen (state change)
      */
     onDestroyEvent: function() {
+        // play the audio track
+        me.audio.stopTrack();
+
         // remove the HUD from the game world
         me.game.world.removeChild(this.HUD);
     }

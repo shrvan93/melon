@@ -100,8 +100,45 @@ game.PlayerEntity = me.Entity.extend({
      * (called when colliding with other objects)
      */
     onCollision : function (response, other) {
-        // Make all other objects solid
-        return true;
+        switch (response.b.body.collisionType) {
+        
+            case me.collision.types.ENEMY_OBJECT:
+                if (!other.isMovingEnemy) {
+                    // spike or any other fixed danger
+                    this.body.vel.y -= this.body.maxVel.y * me.timer.tick;
+                    this.hurt();
+                }
+                else {
+                    // a regular moving enemy entity
+                    if ((response.overlapV.y > 0) && this.body.falling) {
+                        // jump
+                        this.body.vel.y -= this.body.maxVel.y * 1.5 * me.timer.tick;
+                    }
+                    else {
+                        this.hurt();
+                    }
+                    // Not solid
+                    return false;
+                }
+                break;
+        
+            default:
+              // Make the object solid
+              return true;
+          }
+    },
+
+    /**
+     * ouch
+     */
+    hurt : function () {
+        if (!this.renderable.isFlickering())
+        {
+            this.renderable.flicker(750);
+            // flash the screen
+            me.game.viewport.fadeIn("#FFFFFF", 75);
+            me.audio.play("stomp", false);
+        }
     }
 });
 
