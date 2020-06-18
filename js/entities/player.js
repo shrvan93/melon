@@ -11,7 +11,7 @@ game.PlayerEntity = me.Entity.extend({
         this._super(me.Entity, 'init', [x, y , settings])
 
         // setam viteza maxima si frictiunea
-        this.body.setMaxVelocity(3, 10)
+        this.body.setMaxVelocity(4, 15)
         this.body.setFriction(0.4, 0)
 
         // setam display-ul sa urmareasca personajul nostru
@@ -24,6 +24,9 @@ game.PlayerEntity = me.Entity.extend({
 
         // definim animatia pentru stat pe loc
         this.renderable.addAnimation("stand", [0])
+
+        // setam numarul sariturii (initial)
+        this.multipleJump = 1
 
         // setam animatia default
         this.renderable.setCurrentAnimation("stand")
@@ -57,12 +60,26 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         if (me.input.isKeyPressed("jump")) {
-            if (!this.body.jumping && !this.body.falling) {
-                this.body.force.y = -this.body.maxVel.y
+            // setam corpul ca fiind in saritura
+            this.body.jumping = true
+
+            // setam forta proportional cu numarul sariturii
+            if (this.multipleJump <= 2) {
+                this.body.force.y = -this.body.maxVel.y * this.multipleJump++
             }
         } else {
             // setam viteaza 0 pe axa y
             this.body.force.y = 0
+            // cand corpul nu se misca
+            if (!this.body.jumping && !this.body.falling) {
+                // resetam multiple jump
+                this.multipleJump = 1
+            }
+            // daca este in cadere setam multiple jump pe 2 ca sa nu mai poata
+            // sari din nou
+            if (this.body.falling && this.multipleJume < 2) {
+                this.multipleJump = 2
+            }
         }
 
         // apply physics to the body (this moves the entity)
@@ -71,8 +88,16 @@ game.PlayerEntity = me.Entity.extend({
         // handle collisions against other shapes
         me.collision.check(this);
 
-        // return true if we moved or if the renderable was updated
-        return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
+        // verificam daca corpul se misca si trebuie actualizat
+        if (this.body.vel.x !== 0 || this.body.vel.y !== 0 || 
+            (this.renderable && this.renderable.isFlickering())) {
+                this._super(me.Entity, "update", [dt])
+                // se misca
+                return true;
+            }
+        
+        // nu se misca
+        return false;
     },
 
    /**
@@ -85,33 +110,3 @@ game.PlayerEntity = me.Entity.extend({
     }
 });
 
-
-
-/**
- * Coin Entity
- */
-game.Coin = me.CollectableEntity.extend({
-
-    /**
-     * constructor
-     */
-    init:function (x, y, settings) {
-        // call the constructor
-        this._super(me.CollectableEntity, 'init', [x, y , settings])
-    },
-
-   /**
-     * colision handler
-     * (called when colliding with other objects)
-     */
-    onCollision : function (response, other) {
-        // dispare moneda
-        this.body.setCollisionMask(me.collision.types.NO_OBJECT)
-
-        // scoatem moneda din joc
-        me.game.world.removeChild(this)
-
-        // obiectul nu este solid
-        return false
-    }
-})

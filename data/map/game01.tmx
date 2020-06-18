@@ -13,19 +13,14 @@
     <property name="image" value="gripe_run_right.png"/>
    </properties>
   </object>
-  <object id="8" name="coinEntity" x="334.878" y="283.918" width="32" height="34.4266">
+  <object id="8" name="coinEntity" x="334.878" y="283.918" width="32" height="32">
    <properties>
     <property name="framewidth" type="int" value="32"/>
     <property name="image" value="spinning_coin_gold.png"/>
    </properties>
   </object>
-  <object id="9" name="coinEntity" x="231.745" y="344.584" width="32" height="34.4266">
-   <properties>
-    <property name="framewidth" type="int" value="32"/>
-    <property name="image" value="spinning_coin_gold.png"/>
-   </properties>
-  </object>
-  <object id="10" name="coinEntity" x="605.449" y="378.557" width="32" height="34.4266">
+  <object id="9" name="enemyEntity" x="194.132" y="320.318" width="124.213" height="64"/>
+  <object id="10" name="coinEntity" x="605.449" y="378.557" width="32" height="32">
    <properties>
     <property name="framewidth" type="int" value="32"/>
     <property name="image" value="spinning_coin_gold.png"/>
