@@ -19,8 +19,14 @@ game.Coin = me.CollectableEntity.extend({
         // dispare moneda
         this.body.setCollisionMask(me.collision.types.NO_OBJECT)
 
+        // sunet
+        me.audio.play("cling", false)
+
         // scoatem moneda din joc
         me.game.world.removeChild(this)
+
+        // crestem scorul
+        game.data.score += 100
 
         // obiectul nu este solid
         return false

@@ -44,7 +44,10 @@ game.EnemyEntity = me.Entity.extend({
         this.body.collisionType = me.collision.types.ENEMY_OBJECT
 
         // nu vrem sa actualizam personajul cat timp nu este vizibil
-        this.alwaysUpdate = false
+        this.alwaysUpdate = true
+
+        // este un inamic in miscare
+        this.isMovingEnemy = true
     },
 
     /**
@@ -83,6 +86,19 @@ game.EnemyEntity = me.Entity.extend({
      * (called when colliding with other objects)
      */
     onCollision : function (response, other) {
+        if (response.b.body.collisionType !== me.collision.types.WORLD_SHAPE) {
+            // omoram personajul
+            this.alive = false
+            // crestem scorul
+            game.data.score += 50
+            // sterge obiectul
+            this.body.setCollisionMask(me.collision.types.NO_OBJECT)
+            // flickering:
+            var self = this
+            this.renderable.flicker(1000, function () {
+                me.game.world.removeChild(self)
+            })
+        }
         // Make all other objects solid
         return true;
     }

@@ -11,7 +11,7 @@ game.PlayerEntity = me.Entity.extend({
         this._super(me.Entity, 'init', [x, y , settings])
 
         // setam viteza maxima si frictiunea
-        this.body.setMaxVelocity(4, 15)
+        this.body.setMaxVelocity(3, 14)
         this.body.setFriction(0.4, 0)
 
         // setam display-ul sa urmareasca personajul nostru
@@ -24,9 +24,6 @@ game.PlayerEntity = me.Entity.extend({
 
         // definim animatia pentru stat pe loc
         this.renderable.addAnimation("stand", [0])
-
-        // setam numarul sariturii (initial)
-        this.multipleJump = 1
 
         // setam animatia default
         this.renderable.setCurrentAnimation("stand")
@@ -60,25 +57,25 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         if (me.input.isKeyPressed("jump")) {
-            // setam corpul ca fiind in saritura
             this.body.jumping = true
-
-            // setam forta proportional cu numarul sariturii
             if (this.multipleJump <= 2) {
-                this.body.force.y = -this.body.maxVel.y * this.multipleJump++
+                // easy "math" for double jump
+                this.body.force.y = -this.body.maxVel.y * this.multipleJump++;
+                
+                me.audio.play("jump", false)
             }
-        } else {
-            // setam viteaza 0 pe axa y
-            this.body.force.y = 0
-            // cand corpul nu se misca
-            if (!this.body.jumping && !this.body.falling) {
-                // resetam multiple jump
-                this.multipleJump = 1
+        }
+        else {
+
+            this.body.force.y = 0;
+
+            if (!this.body.falling && !this.body.jumping) {
+                // reset the multipleJump flag if on the ground
+                this.multipleJump = 1;
             }
-            // daca este in cadere setam multiple jump pe 2 ca sa nu mai poata
-            // sari din nou
-            if (this.body.falling && this.multipleJume < 2) {
-                this.multipleJump = 2
+            else if (this.body.falling && this.multipleJump < 2) {
+                // reset the multipleJump flag if falling
+                this.multipleJump = 2;
             }
         }
 
@@ -88,15 +85,14 @@ game.PlayerEntity = me.Entity.extend({
         // handle collisions against other shapes
         me.collision.check(this);
 
-        // verificam daca corpul se misca si trebuie actualizat
-        if (this.body.vel.x !== 0 || this.body.vel.y !== 0 || 
-            (this.renderable && this.renderable.isFlickering())) {
-                this._super(me.Entity, "update", [dt])
-                // se misca
-                return true;
-            }
-        
-        // nu se misca
+        // check if we moved (an "idle" animation would definitely be cleaner)
+        if (this.body.vel.x !== 0 || this.body.vel.y !== 0 ||
+            (this.renderable && this.renderable.isFlickering())
+        ) {
+            this._super(me.Entity, "update", [dt]);
+            return true;
+        }
+
         return false;
     },
 
@@ -105,8 +101,40 @@ game.PlayerEntity = me.Entity.extend({
      * (called when colliding with other objects)
      */
     onCollision : function (response, other) {
-        // Make all other objects solid
-        return true;
+ 
+        switch(response.b.body.collisionType) {
+
+            case me.collision.types.ENEMY_OBJECT:
+                // daca este inamic mobil
+                if (other.isMovingEnemy) {
+                    // saritura in capul inamicului
+                    if (response.overlapV.y > 0 && this.body.falling) {
+                        // sare
+                        this.body.vel.y = -this.body.maxVel.y * 1.5 * me.timer.tick
+                    } else {
+                        this.hurt()
+                    }
+                    return false
+                } else {
+                    // inamic fix
+                    // sare
+                    this.body.vel.y = -this.body.maxVel.y * me.timer.tick
+                    // este ranit
+                    this.hurt()
+                }
+
+            default:
+                return true
+        }
+    },
+
+
+    hurt: function() {
+        if (!this.renderable.isFlickering()) {
+            this.renderable.flicker(1000)
+            me.audio.play("stomp", false)
+        }
     }
 });
+
 
