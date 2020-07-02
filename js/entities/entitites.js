@@ -61,8 +61,7 @@ game.PlayerEntity = me.Entity.extend({
             if (this.multipleJump <= 2) {
                 // easy "math" for double jump
                 this.body.force.y = -this.body.maxVel.y * this.multipleJump++;
-                
-                me.audio.play("jump", false)
+                me.audio.play("jump", false);
             }
         }
         else {
@@ -101,41 +100,44 @@ game.PlayerEntity = me.Entity.extend({
      * (called when colliding with other objects)
      */
     onCollision : function (response, other) {
- 
-        switch(response.b.body.collisionType) {
-
+        switch (response.b.body.collisionType) {
+        
             case me.collision.types.ENEMY_OBJECT:
-                // daca este inamic mobil
-                if (other.isMovingEnemy) {
-                    // saritura in capul inamicului
-                    if (response.overlapV.y > 0 && this.body.falling) {
-                        // sare
-                        this.body.vel.y = -this.body.maxVel.y * 1.5 * me.timer.tick
-                    } else {
-                        this.hurt()
-                    }
-                    return true
-                } else {
-                    // inamic fix
-                    // sare
-                    this.body.vel.y = -this.body.maxVel.y * me.timer.tick
-                    // este ranit
-                    this.hurt()
-                    return true
+                if (!other.isMovingEnemy) {
+                    // spike or any other fixed danger
+                    this.body.vel.y -= this.body.maxVel.y * me.timer.tick;
+                    this.hurt();
                 }
-
+                else {
+                    // a regular moving enemy entity
+                    if ((response.overlapV.y > 0) && this.body.falling) {
+                        // jump
+                        this.body.vel.y -= this.body.maxVel.y * 1.5 * me.timer.tick;
+                    }
+                    else {
+                        this.hurt();
+                    }
+                    // Not solid
+                    return false;
+                }
+                break;
+        
             default:
-                return true
-        }
-
-        return true
+              // Make the object solid
+              return true;
+          }
     },
 
-
-    hurt: function() {
-        if (!this.renderable.isFlickering()) {
-            this.renderable.flicker(1000)
-            me.audio.play("stomp", false)
+    /**
+     * ouch
+     */
+    hurt : function () {
+        if (!this.renderable.isFlickering())
+        {
+            this.renderable.flicker(750);
+            // flash the screen
+            me.game.viewport.fadeIn("#FFFFFF", 75);
+            me.audio.play("stomp", false);
         }
     }
 });
