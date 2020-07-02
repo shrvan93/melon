@@ -101,7 +101,7 @@ game.PlayerEntity = me.Entity.extend({
      * (called when colliding with other objects)
      */
     onCollision : function (response, other) {
- 
+
         switch(response.b.body.collisionType) {
 
             case me.collision.types.ENEMY_OBJECT:
@@ -114,14 +114,12 @@ game.PlayerEntity = me.Entity.extend({
                     } else {
                         this.hurt()
                     }
-                    return true
                 } else {
                     // inamic fix
                     // sare
                     this.body.vel.y = -this.body.maxVel.y * me.timer.tick
                     // este ranit
                     this.hurt()
-                    return true
                 }
 
             default:
