@@ -142,6 +142,14 @@ module.exports = function(grunt) {
         },{
           src: ['data/map/**/*.tsx'],
           type: 'tsx'
+        },{
+          src: ['data/fnt/PressStart2P.png'],
+          type: "image",
+          name: "PressStart2P"
+        },{
+          src: ['data/fnt/PressStart2P.fnt'],
+          type: "binary",
+          name: "PressStart2P"
         }]
       }
     },
