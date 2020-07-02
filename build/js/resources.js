@@ -84,14 +84,14 @@ game.resources = [
         "type": "tsx",
         "src": "data/map/game01_level_tiles.tsx"
     },
-    { 
-        name: "PressStart2P", 
-        type:"image", 
-        src: "data/fnt/PressStart2P.png" 
-    },
-    { 
-        name: "PressStart2P", 
-        type:"binary", 
-        src: "data/fnt/PressStart2P.fnt"
-    }
+{ 
+    name: "PressStart2P", 
+    type:"image", 
+    src: "data/fnt/PressStart2P.png" 
+},
+{ 
+    name: "PressStart2P", 
+    type:"binary", 
+    src: "data/fnt/PressStart2P.fnt"
+}
 ];
