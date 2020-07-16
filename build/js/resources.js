@@ -60,6 +60,11 @@ game.resources = [
         "src": "data/map/area01.tmx"
     },
     {
+        "name": "game00",
+        "type": "tmx",
+        "src": "data/map/game00.tmx"
+    },
+    {
         "name": "game01",
         "type": "tmx",
         "src": "data/map/game01.tmx"
@@ -78,6 +83,11 @@ game.resources = [
         "name": "area01_level_tiles",
         "type": "tsx",
         "src": "data/map/area01_level_tiles.tsx"
+    },
+    {
+        "name": "game00_level_tiles",
+        "type": "tsx",
+        "src": "data/map/game00_level_tiles.tsx"
     },
     {
         "name": "game01_level_tiles",
