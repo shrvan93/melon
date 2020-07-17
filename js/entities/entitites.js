@@ -141,5 +141,3 @@ game.PlayerEntity = me.Entity.extend({
         }
     }
 });
-
-

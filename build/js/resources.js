@@ -60,11 +60,6 @@ game.resources = [
         "src": "data/map/area01.tmx"
     },
     {
-        "name": "game00",
-        "type": "tmx",
-        "src": "data/map/game00.tmx"
-    },
-    {
         "name": "game01",
         "type": "tmx",
         "src": "data/map/game01.tmx"
@@ -73,6 +68,11 @@ game.resources = [
         "name": "game02",
         "type": "tmx",
         "src": "data/map/game02.tmx"
+    },
+    {
+        "name": "gameNew",
+        "type": "tmx",
+        "src": "data/map/gameNew.tmx"
     },
     {
         "name": "mymap",
